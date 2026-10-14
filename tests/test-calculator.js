@@ -56,4 +56,18 @@ assert.strictEqual(C.calculateHealth(63000),10080);
 assert.strictEqual(C.calculateLongTerm(71900),9440);
 assert.strictEqual(C.calculateLocalTax(19520),1950);
 
+// 고급 입력 OFF에서는 전달된 직접입력값이 계산 결과에 영향을 주지 않아야 함
+const autoOnly=C.calculate({month:'2026-10',gross:3000000,nontax:0,dependents:1,children:0,withholding:1,
+  pensionMode:'manual',pensionBaseManual:1000000,healthMode:'manual',healthBaseManual:1000000});
+const ordinary=C.calculate({month:'2026-10',gross:3000000,nontax:0,dependents:1,children:0,withholding:1});
+assert.strictEqual(autoOnly.pension,ordinary.pension);
+assert.strictEqual(autoOnly.health,ordinary.health);
+// 적용기간 매니페스트는 검증된 2026년만 포함하며, 미래 데이터를 임의 생성하지 않음
+const manifestCtx={window:{}};
+vm.createContext(manifestCtx);
+vm.runInContext(fs.readFileSync('../data/tax-table-manifest.js','utf8'),manifestCtx);
+assert.strictEqual(manifestCtx.window.TAX_TABLE_MANIFEST.tables.length,1);
+assert.strictEqual(manifestCtx.window.TAX_TABLE_MANIFEST.tables[0].year,2026);
+assert.strictEqual(manifestCtx.window.TAX_TABLE_MANIFEST.tables[0].src,'../data/income-tax-2026.js');
+
 console.log('All release regression tests passed.');
