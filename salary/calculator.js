@@ -65,7 +65,7 @@
   function calculateLocalTax(incomeTax){ return percentTrunc(incomeTax,10,100, R.localIncomeTax.truncateUnit); }
 
   function validate(i){
-    const errors=[]; if(!/^\\d{4}-(0[1-9]|1[0-2])$/.test(i.month)) errors.push("적용월을 올바르게 선택하세요.");
+    const errors=[]; if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(i.month)) errors.push("적용월을 올바르게 선택하세요.");
     if(!Number.isInteger(i.gross)||i.gross<=0) errors.push("월 총급여액은 0원보다 큰 정수로 입력하세요.");
     if(!Number.isInteger(i.nontax)||i.nontax<0) errors.push("비과세액을 올바르게 입력하세요.");
     if(i.nontax>i.gross) errors.push("비과세액은 총급여액보다 클 수 없습니다.");
