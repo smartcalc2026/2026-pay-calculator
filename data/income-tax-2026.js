@@ -1,5 +1,5 @@
 /* 2026년 근로소득 간이세액표 조견표 데이터. 1~2월과 3~12월의 조견표는 동일하며, 자녀 공제는 별도 시행일을 적용한다.
- * 출처: 사용자가 제공한 income-tax-table-2026.xlsx
+ * 출처: 사용자가 제공한 근로소득 간이세액표_2026.03.01.xlsx
  * 단위: 급여 천원 / 세액 원
  * 표 구간은 임의 보간하지 않고 원표의 [이상, 미만] 구간을 그대로 조회한다.
  */
@@ -15,9 +15,10 @@ window.INCOME_TAX_2026 = {
       { max: 14000000, rate: 0.35, excessBase: 10000000, add: 25000, multiply: 0.98 },
       { max: 28000000, rate: 0.38, excessBase: 14000000, add: 1397000, multiply: 0.98 },
       { max: 30000000, rate: 0.40, excessBase: 28000000, add: 6610600, multiply: 0.98 },
-      { max: 45000000, rate: 0.40, excessBase: 30000000, add: 7394600, multiply: 0.98 },
-      { max: 87000000, rate: 0.42, excessBase: 45000000, add: 13394600, multiply: 0.98 },
-      { max: Infinity, rate: 0.45, excessBase: 87000000, add: 31034600, multiply: 0.98 }
+      // 공식 별표에서 3,000만원 초과 구간은 초과 금액에 98%를 곱하지 않음
+      { max: 45000000, rate: 0.40, excessBase: 30000000, add: 7394600, multiply: 1 },
+      { max: 87000000, rate: 0.42, excessBase: 45000000, add: 13394600, multiply: 1 },
+      { max: Infinity, rate: 0.45, excessBase: 87000000, add: 31034600, multiply: 1 }
     ]
   },
   childAdjustment: { one: 20830, two: 45830, extra: 33330 },

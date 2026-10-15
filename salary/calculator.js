@@ -29,11 +29,11 @@
   const parseMoney = (v) => Number(String(v).replace(/,/g,""));
   const formatInput = (el) => { const n=parseMoney(el.value); if(Number.isFinite(n)) el.value=won.format(n); };
 
-  function periodFor(month){ return R.pension.periods.find(p=>month>=p.from && month<=p.to) || R.pension.periods.at(-1); }
+  function periodFor(month){ const monthStart = `${month}-01`; return R.pension.periods.find(p=>monthStart>=p.from && monthStart<=p.to) || null; }
   function pensionBase(taxable,month){ const p=periodFor(month); const reported=trunc(taxable,R.pension.incomeTruncateUnit); return Math.min(p.max,Math.max(p.min,reported)); }
   function calculatePension(taxable,month,manualBase=null){ const base=manualBase===null?pensionBase(taxable,month):manualBase; return percentTrunc(base,475,10000,10); }
   function calculateHealth(taxable,manualBase=null){ const base=manualBase===null?taxable:manualBase; const rawTotal=Math.floor((base * 719) / 10000); const total=Math.min(R.health.maxTotalPremium,Math.max(R.health.minTotalPremium,rawTotal)); return percentTrunc(total,50,100,10); }
-  function calculateLongTerm(health){ return percentTrunc(health,1314,10000,10); }
+  function calculateLongTerm(health){ return percentTrunc(health,R.longTermCare.ratioNumerator,R.longTermCare.ratioDenominator,10); }
   function calculateEmployment(taxable){ return percentTrunc(taxable,9,1000,10); }
 
   function findTableTax(salaryWon,dependents){
@@ -46,7 +46,7 @@
   function baseIncomeTax(salaryWon,dependents){
     const exact=findTableTax(salaryWon,dependents); if(exact!==null) return exact;
     const k=Math.max(1,Math.min(T.familyColumns,dependents))-1; const salaryThousand=salaryWon/1000;
-    if(salaryThousand===10000) return T.tenMillion[k];
+    if(salaryWon===10000000) return T.tenMillion[k];
     if(salaryThousand<10000) return 0;
     const tier=T.overTenMillion.tiers.find(x=>salaryWon<=x.max);
     const ten=T.tenMillion[k];
@@ -65,7 +65,10 @@
   function calculateLocalTax(incomeTax){ return percentTrunc(incomeTax,10,100, R.localIncomeTax.truncateUnit); }
 
   function validate(i){
-    const errors=[]; if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(i.month)) errors.push("적용월을 올바르게 선택하세요.");
+    const errors=[];
+    const validMonthFormat = /^\d{4}-(0[1-9]|1[0-2])$/.test(i.month);
+    if(!validMonthFormat) errors.push("적용월을 올바르게 선택하세요.");
+    else if(!periodFor(i.month)) errors.push("현재 등록된 계산 기준은 2026년 1~12월입니다. 적용월을 다시 선택하세요.");
     if(!Number.isInteger(i.gross)||i.gross<=0) errors.push("월 총급여액은 0원보다 큰 정수로 입력하세요.");
     if(!Number.isInteger(i.nontax)||i.nontax<0) errors.push("비과세액을 올바르게 입력하세요.");
     if(i.nontax>i.gross) errors.push("비과세액은 총급여액보다 클 수 없습니다.");
@@ -105,8 +108,12 @@
     const errors=validate(current);
     if(advancedEnabled && current.pensionMode==="manual") {
       const period=periodFor(current.month);
-      if(!Number.isFinite(current.pensionBaseManual)||!Number.isInteger(current.pensionBaseManual)||current.pensionBaseManual<period.min||current.pensionBaseManual>period.max)
+      // 적용월이 잘못된 경우 period가 없을 수 있으므로 오류 안내 과정에서 예외가 발생하지 않게 합니다.
+      if (!period) {
+        if (!errors.includes("적용월을 올바르게 선택하세요.")) errors.push("적용월에 해당하는 국민연금 기준이 없습니다.");
+      } else if(!Number.isFinite(current.pensionBaseManual)||!Number.isInteger(current.pensionBaseManual)||current.pensionBaseManual<period.min||current.pensionBaseManual>period.max) {
         errors.push(`국민연금 기준소득월액은 해당 기간의 상·하한 ${fmt(period.min)}~${fmt(period.max)} 사이의 정수로 입력하세요.`);
+      }
     }
     if(advancedEnabled && current.healthMode==="manual" && (!Number.isFinite(current.healthBaseManual)||!Number.isInteger(current.healthBaseManual)||current.healthBaseManual<0||current.healthBaseManual>1000000000)) errors.push("건강보험 보수월액은 0~1,000,000,000원 정수로 입력하세요.");
     if(errors.length){$("error").hidden=false;$("error").textContent=errors.join(" ");return;}

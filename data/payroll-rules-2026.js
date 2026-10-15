@@ -21,7 +21,10 @@ window.PAYROLL_RULES_2026 = {
     maxTotalPremium: 9183480
   },
   longTermCare: {
-    rateOnHealth: 0.1314, // 건강보험료 대비 13.14% (소수 0.1314)
+    // 법정 산식: 건강보험료 × 장기요양보험료율 ÷ 건강보험료율
+    // 0.9448% ÷ 7.19% = 9448 ÷ 71900 (반올림한 13.14%를 직접 곱하지 않음)
+    ratioNumerator: 9448,
+    ratioDenominator: 71900,
     incomeRate: 0.009448
   },
   employment: { employeeRate: 0.009 }, // 근로자 부담률 0.9% (소수 0.009)
