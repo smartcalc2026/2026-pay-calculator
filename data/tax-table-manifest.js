@@ -1,15 +1,11 @@
-/* 연도별 계산 데이터 매니페스트
- * from/to는 해당 파일이 법적으로 유효한 기간입니다. 기간은 겹치지 않도록 관리하세요.
- * src는 salary/index.html 기준 상대 경로이며, globalName은 파일이 생성하는 전역 데이터 이름입니다.
- * 새 연도는 공식 자료를 검증한 뒤 세액표와 보험료 규칙을 모두 등록해야 합니다.
- * defaultHistoryYears=10은 조회 기본 범위이며 과거 파일 삭제를 뜻하지 않습니다.
+/* 연도별 간이세액표 매니페스트
+ * 각 항목은 적용 기간과 상대 경로를 지정합니다. 세액표는 필요한 적용월에만 비동기 로딩합니다.
+ * 2027년 이후 데이터는 공식 자료를 검증해 파일을 추가하기 전까지 등록하지 않습니다.
+ * 같은 파일을 여러 기간에서 재사용할 수 있으나, 법적 적용 기간이 같다는 근거를 확인해야 합니다.
  */
 window.TAX_TABLE_MANIFEST = {
-  defaultHistoryYears: 10,
+  defaultHistoryYears: 10, // 기본 조회 범위(최근 10년); 과거 파일 삭제를 의미하지 않음
   tables: [
-    { id: "income-tax-2026", year: 2026, from: "2026-01-01", to: "2026-12-31", src: "../data/income-tax-2026.js", globalName: "INCOME_TAX_2026" }
-  ],
-  rules: [
-    { id: "payroll-rules-2026", year: 2026, from: "2026-01-01", to: "2026-12-31", src: "../data/payroll-rules-2026.js", globalName: "PAYROLL_RULES_2026" }
+    { year: 2026, from: "2026-01-01", to: "2026-12-31", src: "../data/income-tax-2026.js", globalName: "INCOME_TAX_2026" }
   ]
 };
