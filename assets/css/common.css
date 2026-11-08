@@ -4,3 +4,73 @@
 #advanced-insurance[hidden] { display: none !important; }
 #advanced-insurance .help { color: #596579; font-size: .92rem; line-height: 1.5; }
 #advanced-insurance input:disabled { background: #f3f5f7; }
+
+/* B단계: 모바일 조작 편의와 키보드 접근성을 보강하되 기존 카드 디자인은 유지합니다. */
+.container{width:min(calc(100% - 28px),760px);padding-bottom:calc(48px + env(safe-area-inset-bottom,0px))}
+label{display:block;line-height:1.45}
+input,select{min-height:48px;font:inherit;font-size:16px}
+select{display:block;width:100%;margin-top:7px;padding:12px 40px 12px 13px;border:1px solid #cbd5e1;border-radius:12px;background-color:#fff;color:inherit}
+input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+button:disabled{opacity:.65;cursor:wait}
+.primary{min-height:50px}
+.error{line-height:1.55;margin:12px 0}
+.help{line-height:1.55}
+.help{font-size:.9rem}
+#withholding-notice,#salary-mode-notice{position:relative;padding-left:1em}
+#withholding-notice::before,#salary-mode-notice::before{content:"•";position:absolute;left:0;font-weight:800}
+/* 카드 제목, 안내 소제목, 설명 문구의 크기를 단계별로 맞춥니다. */
+#input-title,#public-guidance-content>h2{font-size:1.35rem}
+.guidance-section h3,label{font-size:.93rem}
+.guidance-section li{font-size:.9rem;line-height:1.55}
+.guidance-section ul{margin-block-start:.5em}
+#gross-input-group .conversion-notice,.amount-readable{display:block;margin-top:3px;color:#52606d;font-size:.82rem;font-weight:400;line-height:1.35}
+#gross-input-group .conversion-notice{text-align:left}
+.amount-readable{text-align:right;font-variant-numeric:tabular-nums}
+#gross-input-group .conversion-notice[hidden]{display:none}
+.amount-readable[hidden]{display:none}
+.detail-table{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
+.detail-table th,.detail-table td{padding:11px 9px}
+@media(max-width:420px){
+  .container{width:min(calc(100% - 20px),760px);padding-top:12px}
+  .hero{padding:8px 3px 16px}
+  .card{padding:16px;border-radius:14px}
+  .grid{gap:12px}
+  .choices{gap:6px}
+  .choices label{padding:11px 5px;font-size:.9rem}
+  .summary{grid-template-columns:1fr 1fr}
+  .net{font-size:clamp(1.8rem,9vw,2.6rem);overflow-wrap:anywhere}
+  #advanced-insurance{padding:12px}
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+
+/* B단계: 금액 입력은 숫자와 placeholder를 우측 정렬합니다. 공통 클래스를 사용해 향후 금액 입력에도 적용합니다. */
+.amount-input{ text-align:right; font-variant-numeric:tabular-nums; }
+.amount-input::placeholder{ text-align:right; color:#8793a1; opacity:1; }
+/* 예상 실수령액은 강조를 위해 중앙 정렬하고, 보조 금액과 상세내역은 읽기 쉽게 정렬합니다. */
+#net{text-align:center;font-variant-numeric:tabular-nums}
+#reverse-result-note{text-align:left}
+.summary span{display:block;text-align:right;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.detail-table{display:table;width:100%;table-layout:fixed}
+.detail-table th:first-child,.detail-table td:first-child{text-align:left;width:50%}
+.detail-table th:last-child,.detail-table td:last-child{text-align:right;width:50%;font-variant-numeric:tabular-nums}
+.detail-table th,.detail-table td{padding:6px 4px}
+.detail-assumptions{margin-top:8px;color:#52606d}
+.detail-assumptions td{text-align:center!important;border-bottom:0!important;padding:2px 4px!important}
+/* 상세보기 버튼의 화살표는 레이블과 분리해 접근성 이름에 중복되지 않도록 합니다. */
+#toggle-detail{display:flex;align-items:center;justify-content:center;gap:8px}
+.detail-arrow{display:inline-block;line-height:1;transition:transform .15s ease}
+#toggle-detail[aria-expanded="true"] .detail-arrow{transform:rotate(180deg)}
+/* 좁은 화면에서 입력과 버튼이 화면 밖으로 밀리지 않도록 합니다. */
+.grid,label,.card{min-width:0}
+.amount-input{max-width:100%;}
+/* 상단 계산 기능은 선택 상태가 한눈에 보이는 탭 모양으로 표시합니다. */
+.mode-tabs .choices label{position:relative;cursor:pointer;font-weight:800;background:#f8fafc}
+.mode-tabs .choices label:has(input:checked){background:#17202a;border-color:#17202a;color:#fff}
+.mode-tabs .choices input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.mode-tabs .choices label:focus-within{outline:3px solid #93c5fd;outline-offset:2px}
+.grid>.mode-fieldset{margin:0}
+#target-input-group[hidden],#severance-fieldset[hidden],#gross-mode-fieldset[hidden],#gross-input-group[hidden]{display:none!important}
+@media(max-width:420px){.primary,.secondary{touch-action:manipulation}.detail-table{font-size:.82rem}}
+@media(prefers-reduced-motion:reduce){.detail-arrow{transition:none}}
+h1{word-break:keep-all}
