@@ -66,7 +66,7 @@ button:disabled{opacity:.65;cursor:wait}
 .amount-input{max-width:100%;}
 /* 상단 계산 기능은 선택 상태가 한눈에 보이는 탭 모양으로 표시합니다. */
 .mode-tabs .choices label{position:relative;cursor:pointer;font-weight:800;background:#f8fafc}
-.mode-tabs .choices label:has(input:checked){background:#17202a;border-color:#17202a;color:#fff}
+.mode-tabs .choices label.is-selected{background:#17202a;border-color:#17202a;color:#fff}
 .mode-tabs .choices input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 .mode-tabs .choices label:focus-within{outline:3px solid #93c5fd;outline-offset:2px}
 .grid>.mode-fieldset{margin:0}
@@ -74,3 +74,29 @@ button:disabled{opacity:.65;cursor:wait}
 @media(max-width:420px){.primary,.secondary{touch-action:manipulation}.detail-table{font-size:.82rem}}
 @media(prefers-reduced-motion:reduce){.detail-arrow{transition:none}}
 h1{word-break:keep-all}
+
+/* 입력 기능을 명확히 구분하되, 화면 기본 색은 유지합니다. */
+#calculator-card[data-calculation-mode="reverse"]{background:#f3f5f7;border-color:#dce2e8}
+#calculator-card[data-calculation-mode="reverse"] input,
+#calculator-card[data-calculation-mode="reverse"] select{background-color:#fff}
+@media(max-width:767px){
+  html,body{background:#080b10;color:#edf2f7;color-scheme:dark}
+  .card{background:#11161d;border-color:#2a3440;color:#edf2f7}
+  #calculator-card[data-calculation-mode="forward"]{background:#0d1117;border-color:#263747}
+  #calculator-card[data-calculation-mode="reverse"]{background:#20252b;border-color:#424a55}
+  input,select{background:#1b232c;color:#f2f5f8;border-color:#3a4653}
+  input:focus,select:focus{outline-color:#5ba8ef;border-color:#5ba8ef}
+  .mode-tabs .choices label{background:#1b232c;border-color:#394552;color:#c6d0da}
+  .mode-tabs .choices label.is-selected{background:#2f7fc4;border-color:#2f7fc4;color:#fff}
+  #calculator-card[data-calculation-mode="reverse"] .mode-tabs .choices label.is-selected{background:#62798d;border-color:#62798d;color:#fff}
+  #calculator-card .primary{background:#2f7fc4;color:#fff}
+  #calculator-card[data-calculation-mode="reverse"] .primary{background:#536a7e;color:#fff}
+  .secondary{background:#252c34;color:#edf2f7}
+  .help,.amount-readable,.conversion-notice,.eyebrow{color:#aeb9c6}
+  .error{color:#ffd6d4;background:#3b1c1c}
+  .summary div{background:#1b232c}
+  .summary strong{color:#aeb9c6}
+  .detail-table th,.detail-table td{border-bottom-color:#39434f}
+  .detail-assumptions{color:#b7c1cb}
+  .notes a{color:#8dc2ff}
+}

@@ -115,6 +115,7 @@ test('annual salary input converts correctly with severance separate or included
 });
 
 test('amount reading updates while typing and replaces conversion notice', async ({ page }) => {
+  await page.addInitScript(() => { Element.prototype.replaceChildren = undefined; });
   await page.goto('/salary/');
   const gross = page.locator('#gross');
   const amountReading = page.locator('#gross-input-group .amount-readable');
@@ -139,6 +140,10 @@ test('amount reading updates while typing and replaces conversion notice', async
   const targetReading = page.locator('#target-input-group .amount-readable');
   await page.locator('#target-net').fill('2000000');
   await expect(targetReading).toHaveText('200만 원');
+  const currentUrl = page.url();
+  await page.getByRole('button', { name: '필요 연봉 계산하기' }).click();
+  await expect(page.locator('#result')).toBeVisible();
+  await expect(page).toHaveURL(currentUrl);
 });
 
 test('reverse calculation finds the minimum annual salary for the target', async ({ page }) => {

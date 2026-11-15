@@ -24,7 +24,7 @@
     if(!section || !content || !guidance || guidance.visible !== true) return;
     const visibleSections=(guidance.sections || []).filter(item=>item && item.visible === true);
     if(!visibleSections.length) return;
-    content.replaceChildren();
+    content.textContent="";
     const title=document.createElement("h2"); title.textContent=guidance.title || "계산 기준 및 안내"; content.appendChild(title);
     for(const item of visibleSections){
       const visibleItems=(item.items || []).filter(row=>row && row.visible === true && row.text);
@@ -147,6 +147,13 @@
   }
   function updateCalculationMode(){
     const reverse=calculationMode()==="reverse";
+    const calculatorCard=$("calculator-card");
+    if(calculatorCard) calculatorCard.setAttribute("data-calculation-mode",reverse?"reverse":"forward");
+    document.querySelectorAll(".mode-tabs .choices label").forEach(label=>{
+      const choice=label.querySelector('input[name="calculation-mode"]');
+      if(choice&&choice.checked) label.classList.add("is-selected");
+      else label.classList.remove("is-selected");
+    });
     $("gross-mode-fieldset").hidden=reverse; $("gross-mode-fieldset").style.display=reverse?"none":"";
     $("gross-input-group").hidden=reverse; $("gross-input-group").style.display=reverse?"none":""; $("gross").disabled=reverse;
     $("target-input-group").hidden=!reverse; $("target-input-group").style.display=reverse?"":"none"; $("target-net").disabled=!reverse;
