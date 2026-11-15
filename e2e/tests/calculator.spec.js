@@ -227,8 +227,11 @@ test('reverse mode has a distinct gray card and matching mobile action colors', 
   const card = page.locator('#calculator-card');
   const activeMode = page.locator('.mode-tabs label.is-selected');
   const action = page.locator('#calculator-card .primary');
+  const reverseAmount = page.locator('#target-net');
   await expect.poll(() => card.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(39, 47, 56)');
   await expect.poll(async () => activeMode.evaluate((el, button) => getComputedStyle(el).backgroundColor === getComputedStyle(button).backgroundColor, await action.elementHandle())).toBe(true);
+  await expect.poll(() => reverseAmount.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(255, 255, 255)');
+  await expect.poll(() => reverseAmount.evaluate(el => getComputedStyle(el).color)).toBe('rgb(23, 32, 42)');
   await page.setViewportSize({ width: 1280, height: 900 });
   await expect.poll(() => card.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(232, 237, 242)');
 });

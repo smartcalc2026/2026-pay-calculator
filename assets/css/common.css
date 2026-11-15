@@ -85,6 +85,8 @@ h1{word-break:keep-all}
   #calculator-card[data-calculation-mode="forward"]{background:#0d1117;border-color:#263747}
   #calculator-card[data-calculation-mode="reverse"]{background:#272f38;border-color:#515e6a}
   input,select{background:#1b232c;color:#f2f5f8;border-color:#3a4653}
+  #calculator-card[data-calculation-mode="reverse"] input:not([type="radio"]),
+  #calculator-card[data-calculation-mode="reverse"] select{background-color:#fff;color:#17202a;border-color:#cbd5e1}
   input:focus,select:focus{outline-color:#5ba8ef;border-color:#5ba8ef}
   .mode-tabs .choices label{background:#1b232c;border-color:#394552;color:#c6d0da}
   .mode-tabs .choices label.is-selected{background:#2f7fc4;border-color:#2f7fc4;color:#fff}
