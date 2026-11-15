@@ -205,6 +205,34 @@ test('validation messages for zero gross, excessive nontaxable pay, and children
   await expect(page.locator('#error')).toHaveText('8~20세 자녀 수는 공제대상가족 수를 초과할 수 없습니다.');
 });
 
+test('blank optional deduction fields use their visible defaults and still calculate', async ({ page }) => {
+  await page.goto('/salary/');
+  await page.locator('#gross-mode').selectOption('monthly');
+  await page.locator('#gross').fill('2000000');
+  await page.locator('#nontax').fill('');
+  await page.locator('#dependents').fill('');
+  await page.locator('#children').fill('');
+  await page.getByRole('button', { name: '실수령액 계산하기' }).click();
+  await expect(page.locator('#nontax')).toHaveValue('0');
+  await expect(page.locator('#dependents')).toHaveValue('1');
+  await expect(page.locator('#children')).toHaveValue('0');
+  await expect(page.locator('#error')).toBeHidden();
+  await expect(page.locator('#net')).toHaveText('1,784,190원');
+});
+
+test('reverse mode has a distinct gray card and matching mobile action colors', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/salary/');
+  await page.locator('.mode-tabs label').filter({ hasText: '연봉 역산' }).click();
+  const card = page.locator('#calculator-card');
+  const activeMode = page.locator('.mode-tabs label.is-selected');
+  const action = page.locator('#calculator-card .primary');
+  await expect.poll(() => card.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(39, 47, 56)');
+  await expect.poll(async () => activeMode.evaluate((el, button) => getComputedStyle(el).backgroundColor === getComputedStyle(button).backgroundColor, await action.elementHandle())).toBe(true);
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await expect.poll(() => card.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(232, 237, 242)');
+});
+
 for (const width of [375, 320]) {
   test(`no horizontal overflow at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 850 });

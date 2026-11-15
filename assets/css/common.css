@@ -76,19 +76,19 @@ button:disabled{opacity:.65;cursor:wait}
 h1{word-break:keep-all}
 
 /* 입력 기능을 명확히 구분하되, 화면 기본 색은 유지합니다. */
-#calculator-card[data-calculation-mode="reverse"]{background:#f3f5f7;border-color:#dce2e8}
+#calculator-card[data-calculation-mode="reverse"]{background:#e8edf2;border-color:#b9c4d0}
 #calculator-card[data-calculation-mode="reverse"] input,
 #calculator-card[data-calculation-mode="reverse"] select{background-color:#fff}
 @media(max-width:767px){
   html,body{background:#080b10;color:#edf2f7;color-scheme:dark}
   .card{background:#11161d;border-color:#2a3440;color:#edf2f7}
   #calculator-card[data-calculation-mode="forward"]{background:#0d1117;border-color:#263747}
-  #calculator-card[data-calculation-mode="reverse"]{background:#20252b;border-color:#424a55}
+  #calculator-card[data-calculation-mode="reverse"]{background:#272f38;border-color:#515e6a}
   input,select{background:#1b232c;color:#f2f5f8;border-color:#3a4653}
   input:focus,select:focus{outline-color:#5ba8ef;border-color:#5ba8ef}
   .mode-tabs .choices label{background:#1b232c;border-color:#394552;color:#c6d0da}
   .mode-tabs .choices label.is-selected{background:#2f7fc4;border-color:#2f7fc4;color:#fff}
-  #calculator-card[data-calculation-mode="reverse"] .mode-tabs .choices label.is-selected{background:#62798d;border-color:#62798d;color:#fff}
+  #calculator-card[data-calculation-mode="reverse"] .mode-tabs .choices label.is-selected{background:#536a7e;border-color:#536a7e;color:#fff}
   #calculator-card .primary{background:#2f7fc4;color:#fff}
   #calculator-card[data-calculation-mode="reverse"] .primary{background:#536a7e;color:#fff}
   .secondary{background:#252c34;color:#edf2f7}

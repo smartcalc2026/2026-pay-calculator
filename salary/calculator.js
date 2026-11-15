@@ -308,6 +308,17 @@
     });
     if(parseMoney(el.value)>0) updateReadableAmount(el);
   });
+  const fillDefaultIfEmpty = (el, fallback) => {
+    if(el.value.trim()==="") el.value=String(fallback);
+  };
+  // 선택형 입력을 지운 채 벗어나면 기본값을 보여 주고, 비워 둔 채 계산해도 같은 기본값을 사용합니다.
+  [["nontax",0],["dependents",1],["children",0]].forEach(([id,fallback])=>{
+    const field=$(id);
+    field.addEventListener("blur",()=>{
+      fillDefaultIfEmpty(field,fallback);
+      if(field.classList.contains("amount-input")) updateReadableAmount(field);
+    });
+  });
   $("salary-form").addEventListener("input", () => { latestRequestId++; $("result").hidden=true; });
   $("salary-form").addEventListener("change", () => { latestRequestId++; $("result").hidden=true; });
   [$("gross"),$("target-net"),$("nontax"),$("pension-base-manual"),$("health-base-manual")].filter(Boolean).forEach(el=>el.addEventListener('blur',()=>{formatInput(el);updateReadableAmount(el);}));
@@ -323,6 +334,8 @@
   }
   $("salary-form").addEventListener('submit', async (e)=>{
     e.preventDefault();
+    [["nontax",0],["dependents",1],["children",0]].forEach(([id,fallback])=>fillDefaultIfEmpty($(id),fallback));
+    updateReadableAmount($("nontax"));
     const calcMode=calculationMode(), inputGross=parseMoney($("gross").value), mode=calcMode==="reverse"?"annual":grossMode();
     const targetNet=parseMoney($("target-net").value), nontax=parseMoney($("nontax").value);
     const annualFactor=severanceIncluded()?13:12;
