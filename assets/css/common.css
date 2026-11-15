@@ -71,6 +71,7 @@ button:disabled{opacity:.65;cursor:wait}
 .mode-tabs .choices label.is-selected{background:#17202a;border-color:#17202a;color:#fff}
 .mode-tabs .choices input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 .mode-tabs .choices label:focus-within{outline:3px solid #93c5fd;outline-offset:2px}
+.result .secondary{background:#17202a;color:#fff}
 .grid>.mode-fieldset{margin:0}
 #target-input-group[hidden],#severance-fieldset[hidden],#gross-mode-fieldset[hidden],#gross-input-group[hidden]{display:none!important}
 @media(max-width:420px){.primary,.secondary{touch-action:manipulation}.detail-table{font-size:.82rem}}
@@ -78,14 +79,15 @@ button:disabled{opacity:.65;cursor:wait}
 h1{word-break:keep-all}
 
 /* 입력 기능을 명확히 구분하되, 화면 기본 색은 유지합니다. */
+#calculator-card[data-calculation-mode="forward"]{background:#f7faff;border-color:#d8e3ef}
 #calculator-card[data-calculation-mode="reverse"]{background:#e8edf2;border-color:#b9c4d0}
 #calculator-card[data-calculation-mode="reverse"] input,
 #calculator-card[data-calculation-mode="reverse"] select{background-color:#fff}
 @media(max-width:767px){
   html,body{background:#080b10;color:#edf2f7;color-scheme:dark}
   .card{background:#11161d;border-color:#2a3440;color:#edf2f7}
-  #calculator-card[data-calculation-mode="forward"]{background:#0d1117;border-color:#263747}
-  #calculator-card[data-calculation-mode="reverse"]{background:#272f38;border-color:#515e6a}
+  #calculator-card[data-calculation-mode="forward"]{background:#19232e;border-color:#354454}
+  #calculator-card[data-calculation-mode="reverse"]{background:#303944;border-color:#626f7c}
   input,select{background:#1b232c;color:#f2f5f8;border-color:#3a4653}
   #calculator-card[data-calculation-mode="reverse"] input:not([type="radio"]),
   #calculator-card[data-calculation-mode="reverse"] select{background-color:#fff;color:#17202a;border-color:#cbd5e1}
@@ -96,7 +98,8 @@ h1{word-break:keep-all}
   #calculator-card[data-calculation-mode="reverse"] .mode-tabs .choices label.is-selected{background:#536a7e;border-color:#536a7e;color:#fff}
   #calculator-card .primary{background:#2f7fc4;color:#fff}
   #calculator-card[data-calculation-mode="reverse"] .primary{background:#536a7e;color:#fff}
-  .secondary{background:#252c34;color:#edf2f7}
+  .result .secondary{background:#2f7fc4;color:#fff}
+  #result[data-calculation-mode="reverse"] .secondary{background:#536a7e;color:#fff}
   .help,.amount-readable,.conversion-notice,.eyebrow{color:#aeb9c6}
   .error{color:#ffd6d4;background:#3b1c1c}
   .summary div{background:#1b232c}

@@ -79,6 +79,7 @@ test('default salary result, detail toggle, and deduction amounts', async ({ pag
   await page.locator('#gross-mode').selectOption('monthly');
   await page.locator('#gross').fill('4000000');
   await page.getByRole('button', { name: '실수령액 계산하기' }).click();
+  await expect(page.locator('#result-title')).toHaveText('예상 월실수령액');
   await expect(page.locator('#net')).toHaveText('3,395,760원');
   await expect(page.locator('#summary')).toContainText('공제합계');
   await expect(page.locator('#summary')).toContainText('604,240원');
@@ -163,8 +164,9 @@ test('reverse calculation finds the minimum annual salary for the target', async
 
   await page.locator('#target-net').fill('3000000');
   await submit.click();
-  await expect(page.locator('#net')).toHaveText('3,000,000원');
-  await expect(page.locator('#summary')).toContainText('41,662,560원');
+  await expect(page.locator('#result-title')).toHaveText('필요 연봉');
+  await expect(page.locator('#net')).toHaveText('41,662,560원');
+  await expect(page.locator('#summary')).not.toContainText('필요 연봉');
   await expect(page.locator('#summary')).toContainText('3,471,880원');
   await expect(page.locator('#reverse-result-note')).toContainText('최소 연봉');
 
@@ -229,15 +231,22 @@ test('reverse mode has a distinct gray card and matching mobile action colors', 
   const inactiveMode = page.locator('.mode-tabs label').filter({ hasText: '월 실수령액' });
   const action = page.locator('#calculator-card .primary');
   const reverseAmount = page.locator('#target-net');
-  await expect.poll(() => card.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(39, 47, 56)');
+  await expect.poll(() => card.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(48, 57, 68)');
   await expect.poll(async () => activeMode.evaluate((el, button) => getComputedStyle(el).backgroundColor === getComputedStyle(button).backgroundColor, await action.elementHandle())).toBe(true);
   await expect.poll(() => reverseAmount.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(255, 255, 255)');
   await expect.poll(() => reverseAmount.evaluate(el => getComputedStyle(el).color)).toBe('rgb(23, 32, 42)');
   await expect.poll(() => inactiveMode.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(39, 50, 61)');
   await expect.poll(() => inactiveMode.evaluate(el => getComputedStyle(el).borderTopWidth)).toBe('2px');
+  await expect.poll(async () => page.locator('#result .secondary').evaluate((el, button) => getComputedStyle(el).backgroundColor === getComputedStyle(button).backgroundColor, await action.elementHandle())).toBe(true);
+  await page.locator('.mode-tabs label').filter({ hasText: '월 실수령액' }).click();
+  await expect.poll(() => card.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(25, 35, 46)');
+  await expect.poll(async () => page.locator('#result .secondary').evaluate((el, button) => getComputedStyle(el).backgroundColor === getComputedStyle(button).backgroundColor, await action.elementHandle())).toBe(true);
+  await page.locator('.mode-tabs label').filter({ hasText: '연봉 역산' }).click();
   await page.setViewportSize({ width: 1280, height: 900 });
   await expect.poll(() => card.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(232, 237, 242)');
   await expect.poll(() => inactiveMode.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(223, 232, 241)');
+  await page.locator('.mode-tabs label').filter({ hasText: '월 실수령액' }).click();
+  await expect.poll(() => card.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(247, 250, 255)');
 });
 
 for (const width of [375, 320]) {

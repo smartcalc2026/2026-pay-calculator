@@ -13,7 +13,7 @@
 <meta property="og:title" content="2026 연봉 실수령액 계산기 | 연봉 역산">
 <meta property="og:description" content="연봉 또는 월급으로 예상 실수령액을 계산하고, 원하는 월 실수령액에 필요한 연봉을 역산합니다.">
 <!-- CSS·JavaScript·데이터 파일을 수정해 배포할 때 네 자산의 v 값도 함께 올립니다. -->
-<link rel="stylesheet" href="../assets/css/common.css?v=20261115-cachefix2">
+<link rel="stylesheet" href="../assets/css/common.css?v=20261115-reverse-result1">
 </head>
 <body>
 <main class="container">
@@ -53,7 +53,7 @@
 </form>
 </section>
 <section id="result" class="card result" hidden aria-live="polite">
-<p class="eyebrow">ESTIMATED NET PAY</p><h2>예상 월실수령액</h2><output id="net" class="net">-</output>
+<p id="result-eyebrow" class="eyebrow">ESTIMATED NET PAY</p><h2 id="result-title">예상 월실수령액</h2><output id="net" class="net">-</output>
 <div id="summary" class="summary"></div>
 <p id="reverse-result-note" class="help" hidden></p>
 <button id="toggle-detail" type="button" class="secondary" aria-expanded="false"><span class="detail-arrow" aria-hidden="true">▾</span> <span class="detail-button-label">계산 상세보기</span></button>
@@ -63,8 +63,8 @@
 <div id="public-guidance-content"></div>
 </section>
 </main>
-<script src="../data/tax-table-manifest.js?v=20261115-cachefix2"></script>
-<script src="../data/app-config.js?v=20261115-cachefix2"></script>
-<script src="./calculator.js?v=20261115-cachefix2"></script>
+<script src="../data/tax-table-manifest.js?v=20261115-reverse-result1"></script>
+<script src="../data/app-config.js?v=20261115-reverse-result1"></script>
+<script src="./calculator.js?v=20261115-reverse-result1"></script>
 </body>
 </html>

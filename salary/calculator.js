@@ -153,6 +153,8 @@
     const reverse=calculationMode()==="reverse";
     const calculatorCard=$("calculator-card");
     if(calculatorCard) calculatorCard.setAttribute("data-calculation-mode",reverse?"reverse":"forward");
+    const resultCard=$("result");
+    if(resultCard) resultCard.setAttribute("data-calculation-mode",reverse?"reverse":"forward");
     document.querySelectorAll(".mode-tabs .choices label").forEach(label=>{
       const choice=label.querySelector('input[name="calculation-mode"]');
       if(choice&&choice.checked) label.classList.add("is-selected");
@@ -261,10 +263,13 @@
     return {gross:lo,result:calculate({...base,gross:lo})};
   }
   function render(r){
-    $("result").hidden=false; $("net").textContent=fmt(r.net);
     const reverse=current.calculationMode==="reverse";
+    $("result").hidden=false;
+    $("result-eyebrow").textContent=reverse?"REQUIRED ANNUAL SALARY":"ESTIMATED NET PAY";
+    $("result-title").textContent=reverse?"필요 연봉":"예상 월실수령액";
+    $("net").textContent=fmt(reverse?current.annualGross:r.net);
     const summary=reverse
-      ? [['필요 연봉(퇴직금 별도)',fmt(current.annualGross)],['월 환산 급여',fmt(current.gross)],['목표 월 실수령액',fmt(current.targetNet)],['공제합계',fmt(r.total)]]
+      ? [['월 환산 급여',fmt(current.gross)],['목표 월 실수령액',fmt(current.targetNet)],['공제합계',fmt(r.total)]]
       : current.grossMode==="annual"
       ? [[current.severanceIncluded?"입력 연봉(퇴직금 포함)":"입력 연봉(퇴직금 별도)",fmt(current.annualGross)],['월 환산 급여',fmt(current.gross)],['공제합계',fmt(r.total)],['과세급여',fmt(r.taxable)]]
       : [['월급여',fmt(current.gross)],['공제합계',fmt(r.total)],['과세급여',fmt(r.taxable)]];

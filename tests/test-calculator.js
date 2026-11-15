@@ -118,7 +118,8 @@ console.log('All release regression tests passed.');
 const calculatorHtml=readProjectFile('salary/index.html');
 assert(!calculatorHtml.includes('<script src="../data/income-tax-2026.js"></script>'));
 assert(!calculatorHtml.includes('<script src="../data/payroll-rules-2026.js"></script>'));
-assert(calculatorHtml.includes('<script src="../data/tax-table-manifest.js?v=20261115-cachefix2"></script>'));
+assert(calculatorHtml.includes('<script src="../data/tax-table-manifest.js?v=20261115-reverse-result1"></script>'));
+assert(calculatorHtml.includes('id="result-title"'));
 
 // 고급 직접입력 ON: 입력한 기준은 해당 보험료 산정에 반영되고 다른 자동 산식은 유지
 const onEls=new Proxy({...els}, {get(target,id){if(typeof id!=='string') return target[id]; return target[id]||(target[id]=mockElement());}});
@@ -208,4 +209,7 @@ assert(calculatorJs.includes('(max-width: 767px)'));
 assert(calculatorJs.includes('(prefers-reduced-motion: reduce)'));
 assert(calculatorJs.includes('scrollIntoView'));
 assert(calculatorJs.includes('if(raw==="") return NaN'));
+assert(calculatorJs.includes('$("result-title").textContent=reverse?"필요 연봉":"예상 월실수령액"'));
+assert(calculatorJs.includes('$("net").textContent=fmt(reverse?current.annualGross:r.net)'));
+assert(calculatorJs.includes("? [['월 환산 급여',fmt(current.gross)],['목표 월 실수령액',fmt(current.targetNet)],['공제합계',fmt(r.total)]]"));
 console.log('B-stage amount alignment, detail toggle, mobile scroll and blank-input checks passed.');
