@@ -65,7 +65,9 @@ button:disabled{opacity:.65;cursor:wait}
 .grid,label,.card{min-width:0}
 .amount-input{max-width:100%;}
 /* 상단 계산 기능은 선택 상태가 한눈에 보이는 탭 모양으로 표시합니다. */
-.mode-tabs .choices label{position:relative;cursor:pointer;font-weight:800;background:#f8fafc}
+.mode-tabs{padding:4px;border:1px solid #b7c5d3;border-radius:14px;background:#edf2f7}
+.mode-tabs .choices{gap:6px}
+.mode-tabs .choices label{position:relative;display:flex;align-items:center;justify-content:center;min-height:44px;border:2px solid #aebdcb;border-radius:10px;cursor:pointer;font-weight:800;background:#dfe8f1;color:#243649}
 .mode-tabs .choices label.is-selected{background:#17202a;border-color:#17202a;color:#fff}
 .mode-tabs .choices input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 .mode-tabs .choices label:focus-within{outline:3px solid #93c5fd;outline-offset:2px}
@@ -88,7 +90,8 @@ h1{word-break:keep-all}
   #calculator-card[data-calculation-mode="reverse"] input:not([type="radio"]),
   #calculator-card[data-calculation-mode="reverse"] select{background-color:#fff;color:#17202a;border-color:#cbd5e1}
   input:focus,select:focus{outline-color:#5ba8ef;border-color:#5ba8ef}
-  .mode-tabs .choices label{background:#1b232c;border-color:#394552;color:#c6d0da}
+  .mode-tabs{background:#131b24;border-color:#4b5a68}
+  .mode-tabs .choices label{background:#27323d;border-color:#536271;color:#d5dfe8}
   .mode-tabs .choices label.is-selected{background:#2f7fc4;border-color:#2f7fc4;color:#fff}
   #calculator-card[data-calculation-mode="reverse"] .mode-tabs .choices label.is-selected{background:#536a7e;border-color:#536a7e;color:#fff}
   #calculator-card .primary{background:#2f7fc4;color:#fff}

@@ -10,7 +10,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="2026 연봉 실수령액 계산기">
 <meta property="og:description" content="연봉 또는 월급과 가족 조건을 반영해 예상 월 실수령액을 계산합니다.">
-<link rel="stylesheet" href="../assets/css/common.css">
+<link rel="stylesheet" href="../assets/css/common.css?v=20261115-cachefix2">
 </head>
 <body>
 <main class="container">
@@ -71,9 +71,9 @@
 <p class="disclaimer">면책: 계산 결과는 참고용이며 실제 급여·세무 신고 결과를 보장하지 않습니다.</p>
 </section>
 </main>
-<script src="../data/tax-table-manifest.js"></script>
-<script src="../data/app-config.js"></script>
-<script src="./calculator.js"></script>
+<script src="../data/tax-table-manifest.js?v=20261115-cachefix2"></script>
+<script src="../data/app-config.js?v=20261115-cachefix2"></script>
+<script src="./calculator.js?v=20261115-cachefix2"></script>
 <script>
 window.addEventListener('load',()=>{ const monthly=document.getElementById('gross-mode'); monthly.value='monthly'; monthly.dispatchEvent(new Event('change',{bubbles:true})); document.getElementById('gross').value='4,000,000'; document.getElementById('salary-form').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true})); setTimeout(()=>{document.body.setAttribute('data-smoke-net',document.getElementById('net').textContent); document.body.setAttribute('data-smoke-error',document.getElementById('error').textContent);},2000); });
 </script>

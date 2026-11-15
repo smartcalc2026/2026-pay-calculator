@@ -4,6 +4,10 @@
   const CONFIG = window.APP_CONFIG || { features: { enableAdvancedInsuranceInput: false } };
   const advancedEnabled = !!(CONFIG.features && CONFIG.features.enableAdvancedInsuranceInput === true);
   const $ = (id) => document.getElementById(id);
+  // 동적으로 불러오는 세액표와 보험료 기준에도 HTML의 배포 버전을 이어 붙입니다.
+  const assetVersionMatch = document.currentScript && document.currentScript.src.match(/[?&]v=([^&#]+)/);
+  const assetVersion = assetVersionMatch ? assetVersionMatch[1] : "";
+  const versionedAsset = (src) => assetVersion ? `${src}${src.includes("?") ? "&" : "?"}v=${assetVersion}` : src;
   function currentKoreaMonth(){
     const parts=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit"}).formatToParts(new Date());
     const year=parts.find(part=>part.type==="year").value, month=parts.find(part=>part.type==="month").value;
@@ -61,7 +65,7 @@
     if (pendingData.has(key)) return pendingData.get(key);
     const promise = new Promise((resolve, reject) => {
       const script = document.createElement("script");
-      script.src = entry.src; script.async = true;
+      script.src = versionedAsset(entry.src); script.async = true;
       script.onload = () => {
         const value = window[entry.globalName];
         if (!value) { pendingData.delete(key); reject(new Error(kind === "tax" ? "세액표 데이터를 찾을 수 없습니다." : "보험료 규칙 데이터를 찾을 수 없습니다.")); return; }

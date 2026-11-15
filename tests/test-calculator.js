@@ -118,7 +118,7 @@ console.log('All release regression tests passed.');
 const calculatorHtml=readProjectFile('salary/index.html');
 assert(!calculatorHtml.includes('<script src="../data/income-tax-2026.js"></script>'));
 assert(!calculatorHtml.includes('<script src="../data/payroll-rules-2026.js"></script>'));
-assert(calculatorHtml.includes('<script src="../data/tax-table-manifest.js"></script>'));
+assert(calculatorHtml.includes('<script src="../data/tax-table-manifest.js?v=20261115-cachefix2"></script>'));
 
 // 고급 직접입력 ON: 입력한 기준은 해당 보험료 산정에 반영되고 다른 자동 산식은 유지
 const onEls=new Proxy({...els}, {get(target,id){if(typeof id!=='string') return target[id]; return target[id]||(target[id]=mockElement());}});
@@ -149,12 +149,13 @@ console.log('A-stage manifest/loading and advanced-input tests passed.');
   for (const id of ['advanced-insurance','pension-mode','health-mode','pension-base-manual','health-base-manual']) dynEls[id]={hidden:true,value:'',textContent:'',innerHTML:'',disabled:false,setAttribute(){},addEventListener(){}};
   const dynCtx={window:{APP_CONFIG:{features:{enableAdvancedInsuranceInput:false}}},Intl,console};
   dynCtx.document={
+    currentScript:{src:'https://test.local/salary/calculator.js?v=release-test'},
     getElementById:id=>dynEls[id] || (dynEls[id]={hidden:true,value:'',textContent:'',innerHTML:'',disabled:false,setAttribute(){},addEventListener(){}}),
     querySelector,querySelectorAll:()=>[],
     createElement:()=>({}),
     head:{appendChild(script){
       queueMicrotask(() => {
-        try { const file=path.resolve(root,'salary',script.src); const source=fs.readFileSync(file,'utf8'); vm.runInContext(source,dynCtx); script.onload(); }
+        try { assert(script.src.endsWith('?v=release-test'), 'dynamic data uses the calculator asset version'); const file=path.resolve(root,'salary',script.src.split('?')[0]); const source=fs.readFileSync(file,'utf8'); vm.runInContext(source,dynCtx); script.onload(); }
         catch(e) { if(script.onerror) script.onerror(e); }
       });
     }}

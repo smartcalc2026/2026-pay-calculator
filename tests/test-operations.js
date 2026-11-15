@@ -23,8 +23,19 @@ for (const [source, label] of [[rootHtml, '루트 페이지'], [html, '계산기
 assert(html.includes('https://2026-pay-calculator.vercel.app/salary/'));
 assert(rootHtml.includes('<meta http-equiv="refresh" content="0; url=./salary/">'));
 assert(!/<link\s+rel="canonical"/i.test(rootHtml), '루트 리디렉션 페이지에는 canonical이 없어야 함');
-assert(html.includes('href="../assets/css/common.css"'));
-assert(html.includes('<script src="../data/tax-table-manifest.js"></script>'));
+const assetVersion = html.match(/<script src="\.\.\/data\/tax-table-manifest\.js\?v=([^\"]+)"><\/script>/)?.[1];
+assert(assetVersion, '계산기 배포 자산에는 버전 쿼리가 있어야 함');
+for (const file of [
+  `href="../assets/css/common.css?v=${assetVersion}"`,
+  `<script src="../data/app-config.js?v=${assetVersion}"></script>`,
+  `<script src="./calculator.js?v=${assetVersion}"></script>`
+]) assert(html.includes(file), `계산기 자산 버전 불일치: ${file}`);
+for (const file of [
+  `href="../assets/css/common.css?v=${assetVersion}"`,
+  `<script src="../data/tax-table-manifest.js?v=${assetVersion}"></script>`,
+  `<script src="../data/app-config.js?v=${assetVersion}"></script>`,
+  `<script src="./calculator.js?v=${assetVersion}"></script>`
+]) assert(read('salary/smoke.html').includes(file), `smoke 자산 버전 불일치: ${file}`);
 assert(!html.includes('<script src="../data/income-tax-2026.js"></script>'));
 assert(!html.includes('<script src="../data/payroll-rules-2026.js"></script>'));
 assert(!html.toLowerCase().includes('<iframe'));

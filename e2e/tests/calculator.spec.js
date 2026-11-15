@@ -35,7 +35,7 @@ test('clears a previous result as soon as the user edits an input', async ({ pag
 });
 
 test('advanced insurance fields validate their period-specific limits when enabled', async ({ page }) => {
-  await page.route('**/data/app-config.js', async route => {
+  await page.route('**/data/app-config.js**', async route => {
     const response = await route.fetch();
     const body = (await response.text()).replace('enableAdvancedInsuranceInput: false', 'enableAdvancedInsuranceInput: true');
     await route.fulfill({ response, body });
@@ -226,14 +226,18 @@ test('reverse mode has a distinct gray card and matching mobile action colors', 
   await page.locator('.mode-tabs label').filter({ hasText: '연봉 역산' }).click();
   const card = page.locator('#calculator-card');
   const activeMode = page.locator('.mode-tabs label.is-selected');
+  const inactiveMode = page.locator('.mode-tabs label').filter({ hasText: '월 실수령액' });
   const action = page.locator('#calculator-card .primary');
   const reverseAmount = page.locator('#target-net');
   await expect.poll(() => card.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(39, 47, 56)');
   await expect.poll(async () => activeMode.evaluate((el, button) => getComputedStyle(el).backgroundColor === getComputedStyle(button).backgroundColor, await action.elementHandle())).toBe(true);
   await expect.poll(() => reverseAmount.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(255, 255, 255)');
   await expect.poll(() => reverseAmount.evaluate(el => getComputedStyle(el).color)).toBe('rgb(23, 32, 42)');
+  await expect.poll(() => inactiveMode.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(39, 50, 61)');
+  await expect.poll(() => inactiveMode.evaluate(el => getComputedStyle(el).borderTopWidth)).toBe('2px');
   await page.setViewportSize({ width: 1280, height: 900 });
   await expect.poll(() => card.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(232, 237, 242)');
+  await expect.poll(() => inactiveMode.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(223, 232, 241)');
 });
 
 for (const width of [375, 320]) {
